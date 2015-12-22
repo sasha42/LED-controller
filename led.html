@@ -1,0 +1,78 @@
+<html lang="en">
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+        <title>LED controller</title>
+        <script src="/static/led.js" type="text/javascript"></script>
+        <script type="text/javascript">
+        // Color wheel code
+        var colors;
+        window.onload = function () {
+            var out = document.getElementById("output"),
+                reg = /^#(.)\1(.)\2(.)\3$/;
+            
+            // this is where colorpicker created
+            var cp = Raphael.colorpicker(40, 20, 300, "#eee");
+          
+            // assigning onchange event handler
+            cp.onchange = function (clr) {
+                var confus;
+                var red = (hexToRgb(clr).r);
+                var calcr = red*16;
+                var green = (hexToRgb(clr).g);
+                var calcg = green*16;
+                var blue = (hexToRgb(clr).b);
+                var calcb = blue*16;
+                var obj = {0: calcr, 1: calcg, 2: calcb}
+                confus = JSON.stringify(obj);
+                console.log(confus)
+                send(confus);
+                colors = clr;
+            };
+
+            // Convert hex to rgb
+            function hexToRgb(hex) {
+                var result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
+                return result ? {
+                    r: parseInt(result[1], 16),
+                    g: parseInt(result[2], 16),
+                    b: parseInt(result[3], 16)
+                } : null;
+            };
+            colors = clr;
+            console.log("on load " + colors)
+
+        };
+        var ws = null;
+        colors = colors;
+        function init(colors) {
+            colors = colors;
+            if ("WebSocket" in window) {
+                ws = new WebSocket("ws://yourip:8000/ws");
+                ws.onopen = function() {
+                    console.log("Connection is opened");
+                }
+                ws.onclose = function() {
+                    console.log("Connection is closed");
+                }
+                ws.onmessage = function(msg, colors) {
+                    document.getElementById("display").innerHTML = msg.data;
+                    //document.getElementById("fill").style.backgroundColor = colors;
+                    //console.log("onmessage " + colors);
+                }    
+            } else {
+                console.log('Your browser doenst support WebSocket!')
+            }
+        }
+
+        function send(colors) {
+            ws.send(colors);
+        }
+        </script>
+    </head>
+    <body onload="init();">
+        <div id="picker2"></div>
+        <div id="output">
+        <p id="display"></p>
+        <!--<div id="fill" style="height: 20px; width: 20px; background-color: black;"></div>-->
+    </body>
+</html>

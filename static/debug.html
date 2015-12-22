@@ -1,0 +1,59 @@
+<!doctype html>
+<html>
+<head>
+	<title>LED Controller</title>
+	<script src="http://code.jquery.com/jquery-2.0.0.js"></script>
+</head>
+<body>
+	<script>
+	function set(brightness) {
+		//evt.preventDefault();
+		document.getElementById('input_text').value = JSON.stringify(brightness);
+		document.getElementById('button').click();
+	};
+	</script>
+	<h1 style="margin-bottom: 0px;">LED controller</h1>
+	<span id="conn_text"></span><br /><br />
+	Raw: <input type="text" id="input_text"/>
+	<input type="submit" id="button" value="Send" />
+	<div>
+	<input type="submit" onclick="set({0 : 4096});" value="0%" />
+	<input type="submit" onclick="set({0 : 1024});" value="25%" />
+	<input type="submit" onclick="set({0 : 2048});" value="50%" />
+	<input type="submit" onclick="set({0 : 3072});" value="75%" />
+	<input type="submit" onclick="set({0 : 0});" value="100%" />
+	<div id="messages_txt">
+	<p id="client" />
+	<p id="server" />
+	<script>
+		$(document).ready(function () {
+			var ws = new WebSocket("ws://yourip:8000/ws");
+
+			ws.onopen = function(evt) {
+				var conn_status = document.getElementById('conn_text');
+				conn_status.innerHTML = "Connection status: Connected!"
+			};
+
+			ws.onmessage = function(evt) {
+				var newMessage = document.getElementById('server');
+				newMessage.textContent = "Server: " + evt.data;
+				document.getElementById('messages_txt').appendChild(newMessage);
+			};
+
+			ws.onclose = function(evt) {
+				var conn_status = document.getElementById('conn_text');
+				conn_status.innerHTML = "Connection status: Closed 😕"
+				alert ("Connection closed");
+			};
+			$("#button").click(function(evt) {
+				evt.preventDefault();
+				var message = $("#input_text").val();
+				ws.send(message);
+				var newMessage = document.getElementById('client');
+				newMessage.textContent = "Client: " + message;
+			});
+		});
+		</script>
+	</div>
+	</body>
+	</html>
