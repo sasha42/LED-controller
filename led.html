@@ -3,19 +3,6 @@
         <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
         <title>LED controller</title>
         <script src="/static/led.js" type="text/javascript"></script>
-        <script type="text/javascript">
-        document.addEventListener('click', function(event) {
-          var target = event.target;
-          if (target.tagName.toLowerCase() == 'a')
-          {
-              var hostname = target.getAttribute('href').match(/^:(\d+)(.*)/);
-              if (hostname)
-              {
-                 target.hostname = window.location.href;
-              }
-          }
-        }, false);
-        </script>
 
         <script type="text/javascript">
         // Color wheel code
@@ -61,7 +48,7 @@
         function init(colors) {
             colors = colors;
             if ("WebSocket" in window) {
-                ws = new WebSocket("ws://localhost:8000/ws");
+                ws = new WebSocket("ws://" + location.hostname + ":8000/ws");
                 ws.onopen = function() {
                     console.log("Connection is opened");
                 }
@@ -84,7 +71,7 @@
         </script>
     </head>
     <body onload="init();">
-    <a href="/static/debug.html">Debug</a>
+    <a href="/static/debug.html">>Debug</a>
         <div id="picker2"></div>
         <div id="output">
         <p id="display"></p>
