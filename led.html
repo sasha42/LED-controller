@@ -1,7 +1,12 @@
+<!doctype html>
+<html>
 <html lang="en">
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
         <title>LED controller</title>
+        <script src="https://code.angularjs.org/1.5.0/angular.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/angular-ui-router/0.2.18/angular-ui-router.js   "></script>
+        <script src="/static/led-controller.js" type="text/javascript"></script>
         <script src="/static/led.js" type="text/javascript"></script>
 
         <script type="text/javascript">
@@ -66,9 +71,17 @@
                 console.log('Your browser doenst support WebSocket!')
             }
         }
-        </script>
+        </script>   
+
     </head>
     <body onload="init();">
+
+  <div ng-app="led-controller" ng-controller="LedController as led">
+    <button class="btn" ng-click="led.on()">Turn on</button>
+  </div>
+</div>
+
+    <div ng-viewport="main"></div>
     <a href="/static/debug.html">Debug</a>
         <div id="picker2"></div>
         <div id="output">
