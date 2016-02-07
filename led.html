@@ -75,18 +75,21 @@
         </script>   
 
     </head>
-    <body onload="init();">
-
-  <div ng-app="led-controller" ng-controller="LedController as led">
-    <button class="btn" ng-click="led.on()">Turn on</button>
-  </div>
-</div>
-
-    <div ng-viewport="main"></div>
+    <body onload="init();"  ng-app="led-controller" ng-controller="LedController as led">
+    <div>
     <a href="/static/debug.html">Debug</a>
         <div id="picker2"></div>
         <div id="output">
         <p id="display"></p>
+    </div>
+    <div style="margin-top: 350px">
+    <button class="btn" ng-click="led.on()">Turn on</button>
+    <div>
+        <rzslider
+         rz-slider-model="slider.value"
+         rz-slider-options="{floor: 0, ceil: 100}"></rzslider>
+    </div>
+  </div>
         <!--<div id="fill" style="height: 20px; width: 20px; background-color: black;"></div>-->
     </body>
 </html>
