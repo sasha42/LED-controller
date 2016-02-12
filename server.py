@@ -28,9 +28,9 @@ class WSHandler(tornado.websocket.WebSocketHandler):
     print ('%s' %message)
     parse_json(message)
     self.write_message(message + ' OK')
-    for waiter in cls.waiters:
+    for waiter in self.waiters:
         try:
-            waiter.write_message(chat)
+            waiter.write_message(message)
         except:
             logging.error("Error sending message", exc_info=True)
 
