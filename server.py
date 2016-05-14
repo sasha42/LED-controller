@@ -2,19 +2,23 @@ import tornado.httpserver
 import tornado.websocket
 import tornado.ioloop
 import tornado.web
-from Adafruit_PWM_Servo_Driver import PWM
-import time, sys, os, getopt, json
+import time, sys, os, getopt, json, importlib
 
-# Initialise LED
-pwm = PWM(0x40)
-pwm.setPWMFreq(1000)
+def initialise_led():
+  from Adafruit_PWM_Servo_Driver import PWM
+  hardware = True
+
+  # Set LED parameters
+  pwm = PWM(0x40)
+  pwm.setPWMFreq(1000)
 
 def parse_json(message):
     parameters = json.loads(message)
     for value in parameters:
         channel = int(value)
         brightness = (4095-int(parameters[value]))
-        pwm.setPWM(channel, brightness)
+        if hardware == True:
+            pwm.setPWM(channel, brightness)
     return
 
 class WSHandler(tornado.websocket.WebSocketHandler):
@@ -62,6 +66,12 @@ application = tornado.web.Application([
 ], debug=True, **settings)
 
 if __name__ == "__main__":
+  # See if there is hardware, initialise LEDs
+  hardware = False
+  if importlib.util.find_spec("smbus") != None:
+      initialise_led()
+
+  # Start the server
   http_server = tornado.httpserver.HTTPServer(application)
   http_server.listen(8000)
   tornado.ioloop.IOLoop.instance().start()
