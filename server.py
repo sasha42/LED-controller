@@ -2,7 +2,7 @@ import tornado.httpserver
 import tornado.websocket
 import tornado.ioloop
 import tornado.web
-import time, sys, os, getopt, json, importlib
+import time, sys, os, getopt, json, importlib, logging
 
 def initialise_led():
   from Adafruit_PWM_Servo_Driver import PWM
@@ -48,6 +48,7 @@ class WSHandler(tornado.websocket.WebSocketHandler):
             logging.error("Error sending message", exc_info=True)
 
   def on_close(self):
+    WSHandler.waiters.remove(self)
     print ('connection closed\n')
 
 class IndexHandler(tornado.web.RequestHandler):
