@@ -45,9 +45,16 @@
                     b: parseInt(result[3], 16)
                 } : null;
             };
-            colors = clr;
-            console.log("on load " + colors)
+        };
 
+        // Convert rgb values 0, 1, 2 to hex
+        function componentToHex(c) {
+            var hex = c.toString(16);
+            return hex.length == 1 ? "0" + hex : hex;
+        };
+
+        function rgbToHex(r, g, b) {
+            return "#" + componentToHex(r) + componentToHex(g) + componentToHex(b);
         };
 
         // Websockets
@@ -66,7 +73,11 @@
                 ws.onmessage = function(msg, colors) {
                     document.getElementById("display").innerHTML = msg.data;
                     //document.getElementById("fill").style.backgroundColor = colors;
-                    //console.log("onmessage " + colors);
+
+                    // Converting received color information into hex
+                    colors = JSON.parse(msg.data)
+                    hex = rgbToHex(colors[0]/16, colors[1]/16, colors[2]/16)
+                    console.log(hex)
                 }    
             } else {
                 console.log('Your browser doenst support WebSocket!')
