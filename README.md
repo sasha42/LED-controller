@@ -1,4 +1,4 @@
-# LED controller
+#LED controller
 
 Real time websockets LED controller with a PCA9685 board connected to a Raspberry Pi and some LED strips. Right now there is only one color-wheel with 3 channel outputs, however you can have up to 16 channels per board. All control is done via JSON, new channels and control options can be added with ease.
 
