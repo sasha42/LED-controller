@@ -18,7 +18,7 @@
                 reg = /^#(.)\1(.)\2(.)\3$/;
             
             // this is where colorpicker created
-            var cp = Raphael.colorpicker(40, 20, 300, "#eee");
+            var cp = Raphael.colorpicker(40, 20, 300, "#eee", picker2);
           
             // assigning onchange event handler
             cp.onchange = function (clr) {
@@ -72,12 +72,12 @@
                 }
                 ws.onmessage = function(msg, colors) {
                     document.getElementById("display").innerHTML = msg.data;
-                    //document.getElementById("fill").style.backgroundColor = colors;
 
                     // Converting received color information into hex
                     colors = JSON.parse(msg.data)
                     hex = rgbToHex(colors[0]/16, colors[1]/16, colors[2]/16)
                     console.log(hex)
+                    document.getElementById("output").style.backgroundColor = hex;
                 }    
             } else {
                 console.log('Your browser doenst support WebSocket!')
@@ -89,7 +89,7 @@
     <body onload="init();"  ng-app="led-controller" ng-controller="LedController as led">
     <div>
     <a href="/static/debug.html">Debug</a>
-        <div id="picker2"></div>
+        <div style="background-color: goldenrod;" id="picker2"></div>
         <div id="output">
         <p id="display"></p>
     </div>
