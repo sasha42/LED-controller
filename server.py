@@ -4,6 +4,28 @@ import tornado.ioloop
 import tornado.web
 import time, sys, os, getopt, json, importlib, logging
 
+class MA(object):
+
+    count = 0
+
+class EMA(MA):
+
+    def __init__(self, a):
+        self.a = a
+        self.last = 0
+
+    def compute(self, value):
+        #data is list of ordered value wich is already clean and numerical
+        if  self.count == 0 :
+            self.last = float(value)
+        else:
+            self.last = self.a *float(value) + (1-self.a)*float(self.last)
+
+        self.count = self.count+1
+        return self.last
+
+EMA = EMA(0.2)
+
 def initialise_led():
   from Adafruit_PWM_Servo_Driver import PWM
   hardware = True
@@ -16,7 +38,8 @@ def parse_json(message):
     parameters = json.loads(message)
     for value in parameters:
         channel = int(value)
-        brightness = (4095-int(parameters[value]))
+        brightness = int(EMA.compute((4095-int(parameters[value]))))
+        print(brightness)
         if hardware == True:
             pwm.setPWM(channel, brightness)
     return
