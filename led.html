@@ -59,19 +59,25 @@
         }
 
         .slider.slider-horizontal {
-            width: 100%;
+            width: 80%;
         }
-
+        .channel {
+            width: 7%;
+            text-align: center; 
+        }
         </style>
     </head>
 
     <body onload="init();">
     <div class="leftright">
         <h3 style="margin-top: 0px">Brightness</h3>
-        <input id="ex1" data-slider-id='ex1Slider' type="text" data-slider-min="0" data-slider-max="4096" data-slider-step="1" data-slider-value="3000"/>
+        <div>
+            <input type="text" class="channel" value="0"/input>
+            <a id="myButton" role="button">On</a>
+            <a id="off" role="button">Off</a>
+            <input id="ex1" data-slider-id='ex1Slider' type="text" data-slider-min="0" data-slider-max="4096" data-slider-step="1" data-slider-value="3000"/>
+        </div>
         <p id="status">waiting to connect</p>
-        <a id="myButton" role="button">On</a>
-        <a id="off" role="button">Off</a>
     </div>
 
 <script>
