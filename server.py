@@ -21,6 +21,7 @@ class WSHandler(tornado.websocket.WebSocketHandler):
   waiters = set()
 
   def open(self):
+    self.set_nodelay(True)
     print ('user is connected.\n')
     WSHandler.waiters.add(self)
 
@@ -55,5 +56,5 @@ application = tornado.web.Application([
 
 if __name__ == "__main__":
   http_server = tornado.httpserver.HTTPServer(application)
-  http_server.listen(8000)
+  http_server.listen(80)
   tornado.ioloop.IOLoop.instance().start()
