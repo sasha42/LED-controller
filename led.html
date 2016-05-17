@@ -24,28 +24,7 @@
                 tosend = JSON.stringify(obj);
                 console.log(tosend)
                 ws.send(tosend);
-            });
-
-            // assigning onchange event handler
-            
-        };
-
-        slider.slide = function (clr) {
-                var confus;
-                var red = slider.getValue()*40;
-                var obj = {0: red}
-                confus = JSON.stringify(obj);
-                console.log(confus)
-                ws.send(confus);
-            };
-        // Convert rgb values 0, 1, 2 to hex
-        function componentToHex(c) {
-            var hex = c.toString(16);
-            return hex.length == 1 ? "0" + hex : hex;
-        };
-
-        function rgbToHex(r, g, b) {
-            return "#" + componentToHex(r) + componentToHex(g) + componentToHex(b);
+            });            
         };
 
         // Websockets
@@ -60,13 +39,7 @@
                     console.log("Connection is closed");
                 }
                 ws.onmessage = function(msg, colors) {
-                    //document.getElementById("display").innerHTML = msg.data;
-
-                    // Converting received color information into hex
-                    //colors = JSON.parse(msg.data)
-                    //hex = rgbToHex(colors[0]/16, colors[1]/16, colors[2]/16)
-                    //console.log(hex)
-                    //document.body.style.backgroundColor = hex;
+                    document.getElementById("status").innerHTML = msg.data;
                 }    
             } else {
                 console.log('Your browser doenst support WebSocket!')
@@ -88,25 +61,16 @@
 
         </style>
     </head>
+
     <body onload="init();">
-    <div class="well col-md-6 leftright">
-        <h3 style="margin-top: 0px">Luminosité</h3>
+    <div class="leftright">
+        <h3 style="margin-top: 0px">Brightness</h3>
         <input id="ex1" data-slider-id='ex1Slider' type="text" data-slider-min="0" data-slider-max="4096" data-slider-step="1" data-slider-value="3000"/>
-    </div>
-    <a style="margin-left: 20px" id="myButton" class="btn btn-default col-md-6" role="button">
-  Test
-</a>
-<a style="margin-left: 20px" id="off" class="btn btn-success col-md-1" role="button">
-  Off
-</a>
+        <p id="status">no connection</p>
+        <a id="myButton" role="button">On</a>
+        <a id="off" role="button">Off</a>
     </div>
 
-  </div>
-</div>
-        
-    </div>
-    </div>
-<div style="height: 100px">
 <script>
 function sleep(milliseconds) {
   var start = new Date().getTime();
