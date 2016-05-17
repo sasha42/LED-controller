@@ -2,81 +2,38 @@ import tornado.httpserver
 import tornado.websocket
 import tornado.ioloop
 import tornado.web
-import time, sys, os, getopt, json, importlib, logging
+from Adafruit_PWM_Servo_Driver import PWM
+import time, sys, os, getopt, json
 
-class MA(object):
-
-    count = 0
-
-class EMA(MA):
-
-    def __init__(self, a):
-        self.a = a
-        self.last = 0
-
-    def compute(self, value):
-        #data is list of ordered value wich is already clean and numerical
-        if  self.count == 0 :
-            self.last = float(value)
-        else:
-            self.last = self.a *float(value) + (1-self.a)*float(self.last)
-
-        self.count = self.count+1
-        return self.last
-
-EMA = EMA(0.2)
-
-def initialise_led():
-  from Adafruit_PWM_Servo_Driver import PWM
-  hardware = True
-
-  # Set LED parameters
-  pwm = PWM(0x40)
-  pwm.setPWMFreq(1000)
+# Initialise LED
+pwm = PWM(0x40)
+pwm.setPWMFreq(1000)
 
 def parse_json(message):
     parameters = json.loads(message)
     for value in parameters:
         channel = int(value)
-        brightness = int(EMA.compute((4095-int(parameters[value]))))
-        print(brightness)
-        if hardware == True:
-            pwm.setPWM(channel, brightness)
+        brightness = (4095-int(parameters[value]))
+        pwm.setPWM(channel, brightness)
     return
 
 class WSHandler(tornado.websocket.WebSocketHandler):
-  waiters = set()
-  cache = []
-  cache_size = 200
 
   def open(self):
+    self.set_nodelay(True)
     print ('user is connected.\n')
-    WSHandler.waiters.add(self)
-  
-  @classmethod
-  def update_cache(self, message):
-        self.cache.append(message)
-        if len(self.cache) > self.cache_size:
-            self.cache = self.cache[-self.cache_size:]
 
   def on_message(self, message):
     print ('%s' %message)
     parse_json(message)
     self.write_message(message + ' OK')
-    WSHandler.update_cache(message)
-    for waiter in self.waiters:
-        try:
-            waiter.write_message(message)
-        except:
-            logging.error("Error sending message", exc_info=True)
 
   def on_close(self):
-    WSHandler.waiters.remove(self)
     print ('connection closed\n')
 
 class IndexHandler(tornado.web.RequestHandler):
     def get(self):
-        self.render("led.html", messages=WSHandler.cache)
+        self.render("led.html")
 
 settings = {
     "static_path": os.path.join(os.path.dirname(__file__), "static"),
@@ -90,12 +47,6 @@ application = tornado.web.Application([
 ], debug=True, **settings)
 
 if __name__ == "__main__":
-  # See if there is hardware, initialise LEDs
-  hardware = False
-  if importlib.util.find_spec("smbus") != None:
-      initialise_led()
-
-  # Start the server
   http_server = tornado.httpserver.HTTPServer(application)
-  http_server.listen(8000)
+  http_server.listen(80)
   tornado.ioloop.IOLoop.instance().start()
