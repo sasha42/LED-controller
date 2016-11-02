@@ -23,12 +23,13 @@ def parse_json(message):
 
 class WSHandler(tornado.websocket.WebSocketHandler):
   waiters = set()
-  cache = []
+  cache = ['{"0":0,"1":0,"2":0}']
   cache_size = 200
 
   def open(self):
     print ('user is connected.\n')
     WSHandler.waiters.add(self)
+    self.write_message(str(self.cache[-1]))
 
   @classmethod
   def update_cache(self, message):
