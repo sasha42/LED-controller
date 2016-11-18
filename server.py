@@ -2,7 +2,7 @@ import tornado.httpserver
 import tornado.websocket
 import tornado.ioloop
 import tornado.web
-import time, sys, os, getopt, json
+import time, sys, os, getopt, json, urllib
 
 def initialise_led():
   global pwm
@@ -25,6 +25,10 @@ class WSHandler(tornado.websocket.WebSocketHandler):
   waiters = set()
   cache = ['{"0":0,"1":0,"2":0}']
   cache_size = 200
+
+  def check_origin(self, origin):
+    parsed_origin = urllib.parse.urlparse(origin)
+    return parsed_origin.netloc.endswith(".fixme.ch")
 
   def open(self):
     print ('user is connected.\n')
@@ -65,7 +69,7 @@ application = tornado.web.Application([
     (r'/ws', WSHandler),
     (r"/static/(.*)", tornado.web.StaticFileHandler,
      dict(path=settings['static_path'])),
-], debug=True, **settings)
+], debug=False, **settings)
 
 if __name__ == "__main__":
   # See if there is hardware, initialise LEDs
