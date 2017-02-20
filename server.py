@@ -1,3 +1,5 @@
+#!/usr/bin/python3
+
 import tornado.httpserver
 import tornado.websocket
 import tornado.ioloop
@@ -27,8 +29,9 @@ class WSHandler(tornado.websocket.WebSocketHandler):
   cache_size = 200
 
   def check_origin(self, origin):
-    parsed_origin = urllib.parse.urlparse(origin)
-    return parsed_origin.netloc.endswith(".fixme.ch")
+#    parsed_origin = urllib.parse.urlparse(origin)
+#    return parsed_origin.netloc.endswith(".fixme.ch")
+    return True
 
   def open(self):
     print ('user is connected.\n')

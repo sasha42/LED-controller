@@ -6,11 +6,28 @@ Real time websockets LED controller with a PCA9685 board connected to a Raspberr
 
 ## Setup
 You will need a Raspberry Pi, a PCA9685 I2C PWM driver, some mosfets, and LEDs. I use [this board from Adafruit](https://www.adafruit.com/product/815), hooked up to some BUZ11 mosfets connected to a RGB LED 5m 5050 60led/m strip. To get the server running, you roughly need to do the following:
+
+First, you'll need to enable I2C:
+```bash
+sudo raspi-config
+> 7 Advanced Options
+> A7 I2C
+> Yes
+```
+
+Then you you'll need to update your system and install smbus:
 ```bash
 sudo apt-get update && sudo apt-get upgrade
 sudo apt-get install python3-smbus
-pip3 install tornado
 ```
+
+Next, clone and install this project:
+```bash
+git clone https://github.com/sasha42/LED-controller.git
+cd LED-controller
+pip install -r requirements.txt
+````
+
 You can then run `sudo python3 server.py` to run the controller. Sudo is required because you're accessing the system bus.
 
 There may be a few more steps to do in case you've never used I2C with your Pi before, but those are fairly searchable. Some of the code in this repo has been borrowed improperly - please assume MVP status for this project.
