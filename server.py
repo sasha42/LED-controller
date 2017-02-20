@@ -1,9 +1,14 @@
 #!/usr/bin/python3
 
+#import pdb
+
+import logging
 import tornado.httpserver
-import tornado.websocket
 import tornado.ioloop
+import tornado.log
+import tornado.options
 import tornado.web
+import tornado.websocket
 import time, sys, os, getopt, json, urllib
 
 def initialise_led():
@@ -34,7 +39,8 @@ class WSHandler(tornado.websocket.WebSocketHandler):
     return True
 
   def open(self):
-    print ('user is connected.\n')
+#    pdb.set_trace()
+    logging.info('[ws] '+self.request.remote_ip)
     WSHandler.waiters.add(self)
     self.write_message(str(self.cache[-1]))
 
@@ -45,7 +51,7 @@ class WSHandler(tornado.websocket.WebSocketHandler):
             self.cache = self.cache[-self.cache_size:]
 
   def on_message(self, message):
-    print ('%s' %message)
+    logging.debug('[ws] message: %s' %message)
     parse_json(message)
     self.write_message(message + ' OK')
     WSHandler.update_cache(message)
@@ -57,7 +63,7 @@ class WSHandler(tornado.websocket.WebSocketHandler):
 
   def on_close(self):
     WSHandler.waiters.remove(self)
-    print ('connection closed\n')
+#    print ('connection closed\n')
 
 class IndexHandler(tornado.web.RequestHandler):
     def get(self):
@@ -79,6 +85,9 @@ if __name__ == "__main__":
   initialise_led()
 
   # Start the server
+  tornado.options.options.log_file_prefix = '/opt/log/led/tornado'
+  tornado.options.parse_command_line() # get arguments (enables logging unless overriden)
+
   http_server = tornado.httpserver.HTTPServer(application)
   http_server.listen(80)
   print("Server is listening")
