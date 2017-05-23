@@ -1,4 +1,4 @@
-#LED controller
+# LED controller
 
 Real time websockets LED controller with a PCA9685 board connected to a Raspberry Pi and some LED strips. Right now there is only one color-wheel with 3 channel outputs, however you can have up to 16 channels per board. All control is done via JSON, new channels and control options can be added with ease.
 
@@ -7,7 +7,9 @@ Real time websockets LED controller with a PCA9685 board connected to a Raspberr
 ## Setup
 You will need a Raspberry Pi, a PCA9685 I2C PWM driver, some mosfets, and LEDs. I use [this board from Adafruit](https://www.adafruit.com/product/815), hooked up to some BUZ11 mosfets connected to a RGB LED 5m 5050 60led/m strip. To get the server running, you roughly need to do the following:
 
-First, you'll need to enable I2C:
+You will need a [Raspberry Pi running Raspbian Lite](https://www.raspberrypi.org/downloads/raspbian/). You can use [Etcher](https://etcher.io/) to easily flash your card with a graphical interface.
+
+Once your Pi has booted up, you'll need to enable I2C:
 ```bash
 sudo raspi-config
 > 7 Advanced Options
