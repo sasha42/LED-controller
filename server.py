@@ -2,23 +2,24 @@
 
 #import pdb
 
-import logging
 import tornado.httpserver
 import tornado.ioloop
-import tornado.log
 import tornado.options
 import tornado.web
 import tornado.websocket
 import time, sys, os, getopt, json, urllib
 
 def initialise_led():
-  global pwm
-  from Adafruit_PWM_Servo_Driver import PWM
+  try:
+    global pwm
+    from lib.PCA9685.Adafruit_PWM_Servo_Driver import PWM
 
-  # Set LED parameters
-  pwm = PWM(0x40)
-  pwm.setPWMFreq(1000)
-  print("LEDs are initialised")
+    # Set LED parameters
+    pwm = PWM(0x40)
+    pwm.setPWMFreq(1000)
+    print("LEDs are initialised")
+  except:
+    print("No LEDs to initialise")
 
 def parse_json(message):
     parameters = json.loads(message)
@@ -34,13 +35,9 @@ class WSHandler(tornado.websocket.WebSocketHandler):
   cache_size = 200
 
   def check_origin(self, origin):
-#    parsed_origin = urllib.parse.urlparse(origin)
-#    return parsed_origin.netloc.endswith(".fixme.ch")
     return True
 
   def open(self):
-#    pdb.set_trace()
-    logging.info('[ws] '+self.request.remote_ip)
     WSHandler.waiters.add(self)
     self.write_message(str(self.cache[-1]))
 
@@ -59,11 +56,10 @@ class WSHandler(tornado.websocket.WebSocketHandler):
         try:
             waiter.write_message(message)
         except:
-            logging.error("Error sending message", exc_info=True)
+            print("error")
 
   def on_close(self):
     WSHandler.waiters.remove(self)
-#    print ('connection closed\n')
 
 class IndexHandler(tornado.web.RequestHandler):
     def get(self):
@@ -85,8 +81,6 @@ if __name__ == "__main__":
   initialise_led()
 
   # Start the server
-  tornado.options.options.log_file_prefix = '/opt/log/led/tornado'
-  tornado.options.parse_command_line() # get arguments (enables logging unless overriden)
 
   http_server = tornado.httpserver.HTTPServer(application)
   http_server.listen(80)
