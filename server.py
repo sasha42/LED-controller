@@ -12,7 +12,7 @@ import time, sys, os, getopt, json, urllib
 def initialise_led():
   try:
     global pwm
-    from lib.PCA9685.Adafruit_PWM_Servo_Driver import PWM
+    from Adafruit_PWM_Servo_Driver import PWM
 
     # Set LED parameters
     pwm = PWM(0x40)
@@ -48,7 +48,6 @@ class WSHandler(tornado.websocket.WebSocketHandler):
             self.cache = self.cache[-self.cache_size:]
 
   def on_message(self, message):
-    logging.debug('[ws] message: %s' %message)
     parse_json(message)
     self.write_message(message + ' OK')
     WSHandler.update_cache(message)
