@@ -40,15 +40,13 @@ Assemble the PWM driver to the protoboard: place the left topmost pin (GND) onto
 
 Solder the protoboard to the Pi header
 --------------------------------------
-Now take your 5 pin male female header and assembled protoboard with the PWM driver. You'll need to solder the header half way into the QRSTU row 17 position. Make sure that it's partially exposed so that you could hook up wires to it on the underside of the PCB.
+Now take your 5 pin male female header and assembled protoboard with the PWM driver. You'll need to solder the header half way into the QRSTU row 17 position. Make sure that it's half the way in so that you could hook up wires to it on the underside of the PCB.
 
 ![5 pin header](img/5-pin-header.jpg)
 
-!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! CHECK THIS !!!!!!!!!!!!!!!!!!!!!!!!!
+Then you'll need to connect this header to the PWM driver. V+ goes to the Raspberry Pi pin 1, SDA goes to pin 3, SCL goes to pin 5, and GND goes to pin 9.
 
-Then you'll need to connect this header to the PWM driver. V+ goes to pin 1, SDA goes to pin 3, SCL goes to pin 5, and GND goes to pin 8.
-
-!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! CHECK THIS !!!!!!!!!!!!!!!!!!!!!!!!!
+![pi pinout](img/pi-pinout.png)
 
 ![assembled header](img/5-pin-header-assembled.jpg)
 
