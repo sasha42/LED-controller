@@ -89,13 +89,13 @@ Now place it just under the pins you bent from the transistors, and solder them 
 
 Solder the ground wire
 ----------------------
-You'll need to solder a small wire between the ground of the Pi and the ground of the LED power supply.
-[ground bodge]
+As a final soldering stage, solder a small wire between the ground of the Pi and the ground of the LED power supply.
+![ground bodge](img/ground-wire.jpg)
 
 
 Solder transistors to PWM driver
 -------------------------------
-As a final soldering step, you'll need to connect the gate of the transistor to the PWM output pins of the PWM driver. First, cut a few short wires. Then, carefully solder them to each PWM output pin and transistor gate (leftermost pin of transistor).
+You'll need to connect the gate of the transistor to the PWM output pins of the PWM driver. First, cut a few short wires. Then, carefully solder them to each PWM output pin and transistor gate (leftermost pin of transistor).
 
 ![all things connected](img/solder-led-connector.jpg)
 
@@ -105,7 +105,7 @@ Visual inspection
 Make sure that there are no shorts on the board. We're working with both 5v and 12v on the same board, so a mistake can be quite costly. Make sure that your board is layed out like this:
 
 ![board layout](img/board-layout.jpg)
-[board bottom]
+![all things connected](img/solder-led-connector.jpg)
 
 After completing the inspection, cover up the board with duct tape or electrical tape.
 
