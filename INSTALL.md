@@ -3,7 +3,7 @@ SHA2017 workshop instructions
 ----------------
 Hello! Today you'll build a LED controller that allows you to change the color of your lights over the internet. It runs on a Raspberry Pi and controls LED strips with some electronics that you'll be soldering together.
 
-![final assembly](img/final-assebly.jpg)
+![final assembly](img/final-assembly.jpg)
 ![phone with controller](img/phone-hand.jpg)
 
 Before you start, make sure you have all the parts:
@@ -29,11 +29,11 @@ Assembly
 
 Solder the PWM driver to the protoboard
 ---------------------
-Take the PWM driver, protoboard, 5 and 4 pin male male headers from the kit. Solder the 5 pin header into the left side of the PWM driver, where it says 'GND OE SCL SDA VCC V+' (make sure the labels are on the RIGHT of the header). This will connect the PWM driver to the Raspberry Pi over I2C. Next, solder the 4 pin header just under the '0 1 2 3' labels, on the PWM row. These will provide the output PWM signal for the transistors. 
+Take the PWM driver, protoboard, 5 and 4 pin male male headers from the kit. Solder the 5 pin header into the left side of the PWM driver, where it says `GND OE SCL SDA VCC V+` (make sure the labels are on the RIGHT of the header). This will connect the PWM driver to the Raspberry Pi over I2C. Next, solder the 4 pin header just under the `0 1 2 3` labels, on the PWM row. These will provide the output PWM signal for the transistors. 
 
 ![unassembled pwm driver](img/unnasembled-pwm-driver.jpg)
 
-Aassemble the PWM driver to the protoboard: place the left topmost pin (GND) onto the protoboard in position C14. The last pin (V+) should be on C08. Solder the PWM driver to the protoboard.
+Assemble the PWM driver to the protoboard: place the left topmost pin (GND) onto the protoboard in position C14. The last pin (V+) should be on C08. Solder the PWM driver to the protoboard.
 
 ![assembled pwm driver and protoboard](img/assembled-pwm-driver.jpg)
 
@@ -71,7 +71,7 @@ You'll need to take 3 transistors and some wire.
 
 ![wire and transistors](img/transistors-and-wire.jpg)
 
-We'll need to get a bit creative with this one. Place the 3 transistors on the protoboard, and bend them as shown in the picture below:
+We'll need to get a bit creative with this one. Place the 3 transistors on the protoboard, with the flat metalic surface closest to the pwm driver. The text should be facing you. Now	 bend them as shown in the picture below:
 
 ![bent transistors](img/transistors-and-wire-assembled.jpg)
 
@@ -95,11 +95,11 @@ You'll need to solder a small wire between the ground of the Pi and the ground o
 [ground bodge]
 
 
-Solder transistor to PWM driver
+Solder transistors to PWM driver
 -------------------------------
 As a final soldering step, you'll need to connect the gate of the transistor to the PWM output pins of the PWM driver. First, cut a few short wires. Then, carefully solder them to each PWM output pin and transistor gate (leftermost pin of transistor).
 
-![all things connected](img/solder-led-connector.jpg)!
+![all things connected](img/solder-led-connector.jpg)
 
 
 Visual inspection
@@ -158,7 +158,7 @@ Try it from your computer, your phone or any other modern device. You can also c
 
 Making it run on boot
 -----------
-There are many ways to have something run on boot on a Pi. In this tutorial we will be using `crontab`.
+There are many ways to have something run on boot on a Pi. In this tutorial we will be using `crontab`.	
 
 ```bash
 sudo crontab -e
